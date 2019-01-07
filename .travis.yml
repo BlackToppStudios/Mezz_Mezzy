@@ -1,0 +1,52 @@
+sudo: required
+dist: trusty
+language: cpp
+
+matrix:
+  include:
+    - os: osx
+      compiler: clang
+      env: BUILD_TYPE=Debug
+      env: CXXFLAGS=-fno-var-tracking
+    - os: osx
+      compiler: gcc
+      env: BUILD_TYPE=Debug
+      env: CXXFLAGS=-fno-var-tracking
+    - os: osx
+      compiler: clang
+      env: BUILD_TYPE=Release
+      env: CXXFLAGS=-fno-var-tracking
+    - os: osx
+      compiler: gcc
+      env: BUILD_TYPE=Release
+      env: CXXFLAGS=-fno-var-tracking
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake -G"Ninja" .. -DCMAKE_BUILD_TYPE="$BUILD_TYPE" -DMEZZ_BuildDoxygen=OFF -DMEZZ_CodeCoverage=ON
+
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then sudo apt-get install valgrind ninja-build ggcov -q -y; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then sudo ln -sf /usr/bin/gcov-4.8 /usr/bin/gcov; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]   ; then brew install valgrind ninja; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]   ; then brew install ninja; fi
+
+# Some day brew will fix valgrind
+
+script:
+  - ninja
+  - ./Mezz_Mezzy_Tester
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then valgrind --tool=memcheck --leak-check=full --error-exitcode=1 ./Mezz_Mezzy_Tester; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then valgrind --tool=memcheck --leak-check=full --error-exitcode=1 ./Mezz_Mezzy_Tester Debug All; fi
+
+after_success:
+  - ninja TestCoverage
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email:
+    recipients:
+      - contact@blacktoppstudios.com
+    on_success: change
+    on_failure: always

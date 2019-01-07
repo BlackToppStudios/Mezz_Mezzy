@@ -1,0 +1,43 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Libraries
+*.so
+*.so.*
+*.dylib
+*.dll
+*.a
+*.lai
+*.la
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Editor Temp Files
+CMakeLists.txt.user*
+*~
+*.autosave
+*.kate-swp
+
+# Doxygen Temp Files
+*.tmp
+
+# Desktop Environment hidden files
+.DS_Store
+.directory
+
+# Ignore libincludes mercurial files
+.hg*
+
+# other git files
+.git*
