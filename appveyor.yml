@@ -40,7 +40,7 @@ build_script:
 
 test_script:
   - cmd: cd C:\projects\Mezz_Mezzy\build
-  - cmd: Mezz_Mezzy_Tester xml
+  - cmd: Mezzy_Tester xml
 
 notifications:
 - provider: Email

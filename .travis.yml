@@ -36,9 +36,9 @@ install:
 
 script:
   - ninja
-  - ./Mezz_Mezzy_Tester
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then valgrind --tool=memcheck --leak-check=full --error-exitcode=1 ./Mezz_Mezzy_Tester; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then valgrind --tool=memcheck --leak-check=full --error-exitcode=1 ./Mezz_Mezzy_Tester Debug All; fi
+  - ./Mezzy_Tester
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then valgrind --tool=memcheck --leak-check=full --error-exitcode=1 ./Mezzy_Tester; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then valgrind --tool=memcheck --leak-check=full --error-exitcode=1 ./Mezzy_Tester Debug All; fi
 
 after_success:
   - ninja TestCoverage
