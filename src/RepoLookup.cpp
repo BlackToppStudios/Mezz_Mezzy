@@ -1,23 +1,23 @@
 // © Copyright 2010 - 2019 BlackTopp Studios Inc.
-/* This file is part of The Mezzanine Engine.
+/* This file is part of The UTF8 Conversion Library.
 
-    The Mezzanine Engine is free software: you can redistribute it and/or modify
+    The UTF8 Conversion Library is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    The Mezzanine Engine is distributed in the hope that it will be useful,
+    The UTF8 Conversion Library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with The Mezzanine Engine.  If not, see <http://www.gnu.org/licenses/>.
+    along with The UTF8 Conversion Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* The original authors have included a copy of the license specified above in the
-   'Docs' folder. See 'gpl.txt'
+   'doc' folder. See 'gpl.txt'
 */
-/* We welcome the use of the Mezzanine engine to anyone, including companies who wish to
+/* We welcome the use of the UTF8 Conversion Library to anyone, including companies who wish to
    Build professional software and charge for their product.
 
    However there are some practical restrictions, so if your project involves
@@ -37,29 +37,47 @@
    Joseph Toppi - toppij@gmail.com
    John Blackwood - makoenergy02@gmail.com
 */
-#ifndef Mezz_Mezzy_SmapleTest_h
-#define Mezz_Mezzy_SmapleTest_h
 
 /// @file
-/// @brief Tests for the stuff in SampleHeader and SampleSource
+/// @brief
 
+// Mezzy Headers
+#include "RepoLookup.h"
+#include "iostream"
+#include "DataTypes.h"
 
-// Add other headers you need here
-#include "SampleHeader.h"
+namespace Mezzanine {
+namespace Mezzy {
 
-#include "MezzTest.h"
-
-// This boilerplate sucks, but it is as small as was reasonable to make it. This always matches the filename. Just
-// Put FilenameTest in for the first parameter and Filename in for the second. There are reasons for this but even
-// The developers of this havn't found a good reason to deviate, dig into the Mezz_Test docs if you want details.
-DEFAULT_TEST_GROUP(SampleTest, Sample)
-{
-    // Put tests here! Look into the Mezz_Test docs for more assertions
-    TEST("SampleTestThatAlwaysShouldPass", 0 < 1);
-
-    TEST_EQUAL("SampleCodeThatReturnsNumber-ReturnsAnswerToLifeUniverseAndEverything",
-               42,
-               SampleCodeThatReturnsNumber());
+// All directories are relative to the Mezzanine package Directory.
+namespace {
+    const String MezzaninePathVar = "MEZZ_PACKAGE_DIR";
+    const String JagatiDirSuffix = "Jagati";
 }
 
-#endif
+
+String GetMezzaninePathVar()
+    { return MezzaninePathVar; }
+
+String GetMezzaninePath()
+{
+    char* Posssible = std::getenv(GetMezzaninePathVar().c_str());
+    if(nullptr == Posssible)
+        { return ""; }
+    return String(Posssible);
+}
+
+void GetMezzaninePathHandler(const CommandLineCallingTable::ArgVectorType)
+    { std::cout << GetMezzaninePath() << std::endl; }
+
+
+String GetJagatiDir()
+{
+    return GetMezzaninePath() + '/' + JagatiDirSuffix;
+}
+
+
+} // Namepspaces Mezzy/Mezzanine
+}
+
+
