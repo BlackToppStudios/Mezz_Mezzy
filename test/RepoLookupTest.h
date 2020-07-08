@@ -37,91 +37,26 @@
    Joseph Toppi - toppij@gmail.com
    John Blackwood - makoenergy02@gmail.com
 */
-#ifndef Mezz_Mezzy_CommandLineParserTest_h
-#define Mezz_Mezzy_CommandLineParserTest_h
+#ifndef Mezz_Mezzy_RepoLookupTest_h
+#define Mezz_Mezzy_RepoLookupTest_h
 
 /// @file
-/// @brief Tests for the stuff in SampleHeader and SampleSource
+/// @brief Tests Basic Repo lookup tools
 
 
-// Add other headers you need here
-#include "CommandLineCallingTable.h"
+#include "RepoLookup.h"
 
 #include "MezzTest.h"
 
-// This boilerplate sucks, but it is as small as was reasonable to make it. This always matches the filename. Just
-// Put FilenameTest in for the first parameter and Filename in for the second. There are reasons for this but even
-// The developers of this havn't found a good reason to deviate, dig into the Mezz_Test docs if you want details.
-DEFAULT_TEST_GROUP(CommandLineCallingTableTest, CommandLineCallingTable)
+
+DEFAULT_TEST_GROUP(RepoLookupTest, RepoLookup)
 {
-    // Make life easier for us writing this test.
-    using CallingTable = Mezzanine::Mezzy::CommandLineCallingTable;
-    using ArgVectorSize= CallingTable::ArgVectorType::size_type;
-
-    // Places to store passed Vectors
-    CallingTable::ArgVectorType CaptureVectorA;
-    CallingTable::ArgVectorType CaptureVectorB;
 
 
-
-    // Test functions for our test calling tables
-    CallingTable::ArgumentHandlerType TestHandlerA = [&CaptureVectorA](const CallingTable::ArgVectorType Args)
-        { CaptureVectorA = Args; };
-    CallingTable::ArgumentHandlerType TestHandlerB = [&CaptureVectorB](const CallingTable::ArgVectorType Args)
-        { CaptureVectorB = Args; };
-
-
-    // Create a Calling table with nothing in it
-    CallingTable UnderTest;
-    TEST_EQUAL("StartEmptyA1",          false, UnderTest.EntryExists("A"));
-    TEST_EQUAL("StartEmptyB1",          false, UnderTest.EntryExists("B"));
-
-
-    // Wiring up the test table with the test fixtures we just made.
-    UnderTest.AddTableEntry("A", std::move(TestHandlerA));
-    TEST_EQUAL("PresentAfterAddA",      true,  UnderTest.EntryExists("A"));
-    TEST_EQUAL("NotPresentAfterAddA",   false, UnderTest.EntryExists("B"));
-
-    UnderTest.AddTableEntry("B", std::move(TestHandlerB));
-    TEST_EQUAL("UnchangeedAfterAddB",   true, UnderTest.EntryExists("A"));
-    TEST_EQUAL("PresentAfterAddB",      true, UnderTest.EntryExists("B"));
-
-    // Double adds should throw and shouldn't change anything.
-    TEST_THROW("ThrowOnDoubleAdd", std::runtime_error, [&](){ UnderTest.AddTableEntry("A", std::move(TestHandlerA)); });
-    TEST_EQUAL("GoodPostDoubleAddA",    true, UnderTest.EntryExists("A"));
-
-
-    // Let's try invoking the calling table and see if it accepts the args and does what our lambdas do.
-    UnderTest.ExecuteEntry("A");
-    TEST_EQUAL("AExecutionSanityCheck0Size",        ArgVectorSize(0), CaptureVectorA.size());
-    TEST_EQUAL("BExecutionSanityCheck0Size",        ArgVectorSize(0), CaptureVectorB.size());
-
-    UnderTest.ExecuteEntry("A", {});
-    TEST_EQUAL("AExecutionSanityCheck1Size",        ArgVectorSize(0), CaptureVectorA.size());
-    TEST_EQUAL("BExecutionSanityCheck1Size",        ArgVectorSize(0), CaptureVectorB.size());
-
-    UnderTest.ExecuteEntry("A", {"SampleArg"});
-    TEST_EQUAL("AExecutionSanityCheck2Size",        ArgVectorSize(1), CaptureVectorA.size());
-    TEST_EQUAL("AExecutionSanityCheck2Index0",      Mezzanine::String("SampleArg"), CaptureVectorA[0]);
-    TEST_EQUAL("BExecutionSanityCheck2Size",        ArgVectorSize(0), CaptureVectorB.size());
-
-    UnderTest.ExecuteEntry("A", {"File1.txt","File2.txt"});
-    TEST_EQUAL("AExecutionSanityCheck3Size",        ArgVectorSize(2), CaptureVectorA.size());
-    TEST_EQUAL("AExecutionSanityCheck3Index0",      Mezzanine::String("File1.txt"), CaptureVectorA[0]);
-    TEST_EQUAL("AExecutionSanityCheck3Index1",      Mezzanine::String("File2.txt"), CaptureVectorA[1]);
-    TEST_EQUAL("BExecutionSanityCheck3Size",        ArgVectorSize(0), CaptureVectorB.size());
-
-    UnderTest.ExecuteEntry("B", {"1", "2", "3"});
-    TEST_EQUAL("AExecutionSanityCheck4Size",        ArgVectorSize(2), CaptureVectorA.size());
-    TEST_EQUAL("AExecutionSanityCheck4Index0",      Mezzanine::String("File1.txt"), CaptureVectorA[0]);
-    TEST_EQUAL("AExecutionSanityCheck4Index1",      Mezzanine::String("File2.txt"), CaptureVectorA[1]);
-    TEST_EQUAL("BExecutionSanityCheck4Size",        ArgVectorSize(3), CaptureVectorB.size());
-    TEST_EQUAL("BExecutionSanityCheck4Index0",      Mezzanine::String("1"), CaptureVectorB[0]);
-    TEST_EQUAL("BExecutionSanityCheck4Index1",      Mezzanine::String("2"), CaptureVectorB[1]);
-    TEST_EQUAL("BExecutionSanityCheck4Index2",      Mezzanine::String("3"), CaptureVectorB[2]);
+    //TEST_EQUAL("BExecutionSanityCheck4Index2",      Mezzanine::String("3"), CaptureVectorB[2]);
 
     // This should throw on calling a bad table entry.
-    TEST_THROW("ThrowBadExecuteName", std::runtime_error, [&](){ UnderTest.ExecuteEntry("NotArg"); });
+    //TEST_THROW("ThrowBadExecuteName", std::runtime_error, [&](){ UnderTest.ExecuteEntry("NotArg"); });
 }
 
 #endif

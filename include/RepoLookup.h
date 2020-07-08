@@ -62,6 +62,10 @@ using RepoList = std::vector<String>;
 /// @return A String with "MEZZ_PACKAGE_DIR",
 MEZZ_LIB Mezzanine::String GetMezzaninePathVar();
 
+/// @brief Is the Mezzanine Package var set?
+/// @return If set, even if empty, true, if unset false.
+MEZZ_LIB Mezzanine::Boole IsMezzaninePathVarSet();
+
 /// @brief Get the folder of the env var for the Mezzanine package dir.
 /// @return An emptry string if the package dir var is unset otherwise the folder that var indicates.
 MEZZ_LIB String GetMezzaninePath();

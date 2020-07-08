@@ -62,11 +62,11 @@ Mezzanine::ExitCode main(int ArgCount, char** Arguments)
     // Add each Argument
     AddCallingTableEntries();
 
-    // The Help visitors scans the existing arguments to generate help
+    // The Help visitor scans the existing arguments to generate help
     Mezzanine::Mezzy::CommandLineCallingTableVisitorHelpMessager
             Helper(ParsedArgs.ExecutableCommand, CallingTable);
 
-    // Bail on no args
+    // Bail if no args
     if(0 == ParsedArgs.Arguments.size())
     {
         std::cerr << "No arguments: " << std::endl
@@ -130,8 +130,17 @@ void AddCallingTableEntries()
     CallingTable.AddTableEntry(
         "-p",  "--package-dir",
         "Print The Mezzanine Package Directory",
-        "This prints the location in the envrionment variable '" +
+        "This prints the location in the enviornment variable '" +
             Mezzanine::Mezzy::GetMezzaninePathVar() + "' ",
         Mezzanine::Mezzy::GetMezzaninePathHandler);
+
+    CallingTable.AddTableEntry(
+        "-j",  "--jagati-dir",
+        "Print The directory of the Jagati metapackage package",
+        "Based on the Mezzanine Package Directory environment variable this prints location of the Jagati directory. "
+            "This won't exist on every system, only people developing the Jagati need it.",
+        Mezzanine::Mezzy::GetMezzaninePathHandler);
+
+
 
 }

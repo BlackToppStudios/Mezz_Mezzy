@@ -107,6 +107,7 @@ CreateCoverageTarget(${MezzyLib} "${MezzySourceFiles}")
 #target_include_directories(${MezzyLib} PRIVATE "${MezzyLibDir}")
 
 AddTestFile("CommandLineCallingTableTest.h")
+AddTestFile("RepoLookupTest.h")
 EmitTestCode()
 AddTestTarget()
 

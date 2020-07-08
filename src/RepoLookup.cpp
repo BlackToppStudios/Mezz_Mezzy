@@ -59,6 +59,9 @@ namespace {
 String GetMezzaninePathVar()
     { return MezzaninePathVar; }
 
+Boole IsMezzaninePathVarSet()
+    { return nullptr == std::getenv(GetMezzaninePathVar().c_str()); }
+
 String GetMezzaninePath()
 {
     char* Posssible = std::getenv(GetMezzaninePathVar().c_str());

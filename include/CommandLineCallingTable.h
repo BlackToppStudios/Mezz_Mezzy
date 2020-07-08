@@ -62,7 +62,7 @@ namespace Mezzy {
 
 
 
-/// @brief This is a minimail IOC (Inversion of Control) contrainer for command line arguments.
+/// @brief This is a minimal IOC (Inversion of Control) contrainer for command line arguments.
 /// @details This is designed to be a simple way to call functions from string names. Each function can accept a vector
 /// of strings as an argument. This closely corresponds to the conventions around passing options on the command line
 /// and is intended to be used to ease passing control to command line
@@ -84,22 +84,26 @@ public:
 
     /// @brief The type for storing help messages.
     using HelpMessageType = Mezzanine::String;
-/*
-    using VisitorType = std::function<void(const KeyType& ShortKey,
-                                           const KeyType& LongKey,
-                                           const HelpMessageType& BriefHelp,
-                                           const HelpMessageType& LongHelp,
-                                           const ArgumentHandlerType& Handler)>;
-*/
+
+    /// @brief This is one complete set of data for a Entry in this calling table
     struct MEZZ_LIB CommandLineCallingTableRecord {
-        const KeyType& ShortKey;
-        const KeyType& LongKey;
-        const HelpMessageType& BriefHelp;
-        const HelpMessageType& LongHelp;
-        const ArgumentHandlerType& Handler;
+        const KeyType& ShortKey;                ///< The single letter arg that might be passed to the executable.
+        const KeyType& LongKey;                 ///< An arg that might be passed to the executable of any length.
+        const HelpMessageType& BriefHelp;       ///< A short (~40 chars) help message used in a summary.
+        const HelpMessageType& LongHelp;        ///< A detailed help message used in the complete help.
+        const ArgumentHandlerType& Handler;     ///< A function to be called if either flag is passed.
     };
 
-    //using VisitorType = std::function<void(const CommandLineCallingTableRecord&)>;
+
+    /* This is unused functionality, we used a template for now, before this is complete we will
+        using VisitorType = std::function<void(const KeyType& ShortKey,
+                                               const KeyType& LongKey,
+                                               const HelpMessageType& BriefHelp,
+                                               const HelpMessageType& LongHelp,
+                                               const ArgumentHandlerType& Handler)>;
+        using VisitorType = std::function<void(const CommandLineCallingTableRecord&)>;
+    */
+
 
 private:
     using CallingTableType = std::map<KeyType, ArgumentHandlerType>;
@@ -147,6 +151,8 @@ public:
     /// @brief Add an entry to this calling table with this.
     /// @param ShortKey The short name to add, examples: "-a", "-p".
     /// @param LongKey The long name to add, examples: "--Arg", "--Parameter".
+    /// @param BriefMessage Short help message for user display in summaries.
+    /// @param HelpMessage A full description of what this does.
     /// @param ArgumentHandler A function to called when the given name is supplied.
     /// @throw std::runtime_error This throws when a duplicate key or invalid ket is attempted to be added and the
     /// state of the calling table is unchanged.
@@ -157,8 +163,9 @@ public:
                        ArgumentHandlerType ArgumentHandler);
 
     /// @brief Add an entry to this calling table with this.
-    /// @param ShortKey The short name to add, examples: "-a", "-p".
     /// @param LongKey The long name to add, examples: "--Arg", "--Parameter".
+    /// @param BriefMessage Short help message for user display in summaries.
+    /// @param HelpMessage A full description of what this does.
     /// @param ArgumentHandler A function to called when the given name is supplied.
     /// @throw std::runtime_error This throws when a duplicate key or invalid ket is attempted to be added and the
     /// state of the calling table is unchanged.
