@@ -39,15 +39,59 @@
 */
 
 /// @file
-/// @brief
+/// @brief All of the rules and policy for interacting with env vars.
+
+// Other Mezzanine Headers
+#include "PathUtilities.h"
 
 // Mezzy Headers
-#include "RepoLookup.h"
 #include "DataTypes.h"
+#include "EnvironmentVars.h"
+#include "JagatiLocations.h"
+
 
 namespace Mezzanine {
 namespace Mezzy {
 
+using Mezzanine::Mezzy::GetMezzaninePath;
+using Mezzanine::Filesystem::IsDirectorySeparator;
+using Mezzanine::Filesystem::GetDirectorySeparator_Host;
+
+namespace {
+    SAVE_WARNING_STATE
+    SUPPRESS_CLANG_WARNING("-Wexit-time-destructors")
+    SUPPRESS_CLANG_WARNING("-Wglobal-constructors")
+
+    const String JagatiDirSuffix = "Jagati";
+    const String JagatiCMakeSuffix = JagatiDirSuffix + GetDirectorySeparator_Host() + "Jagati.cmake";
+    const String JagatiPackageIndexSuffix = JagatiDirSuffix + GetDirectorySeparator_Host() + "JagatiIndex.cmake";
+
+    RESTORE_WARNING_STATE
+
+    // Does the same basic attaching of suffixes to the Mezzanine path.
+    String GetMezzaninePathWithSuffix(String Suffix)
+    {
+        String results{GetMezzaninePath()};
+
+        if(results.empty())
+            { return ""; }
+
+        const String::value_type LastChar{ results[results.size()-1] };
+        if(IsDirectorySeparator(LastChar))
+            { return GetMezzaninePath() + Suffix; }
+        else
+            { return GetMezzaninePath() + GetDirectorySeparator_Host() + Suffix; }
+    }
+}
+
+String GetJagatiDir()
+    { return GetMezzaninePathWithSuffix(JagatiDirSuffix); }
+
+String GetJagatiCMakeFile()
+    { return GetMezzaninePathWithSuffix(JagatiCMakeSuffix); }
+
+String GetJagatiPackageListFile()
+    { return GetMezzaninePathWithSuffix(JagatiPackageIndexSuffix); }
 
 
 

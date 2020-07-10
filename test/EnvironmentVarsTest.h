@@ -37,37 +37,49 @@
    Joseph Toppi - toppij@gmail.com
    John Blackwood - makoenergy02@gmail.com
 */
-#ifndef Mezz_Mezzy_RepoLookup_h
-#define Mezz_Mezzy_RepoLookup_h
-
+#ifndef Mezz_Mezzy_EnvironmentVarsTest_h
+#define Mezz_Mezzy_EnvironmentVarsTest_h
 
 /// @file
-/// @brief The interface for parsing command line arguments.
+/// @brief Tests Basic Repo lookup tools
 
-#ifndef SWIG
-    // Mezzanine Headers
-    #include "DataTypes.h"
+// Mezzy
+#include "EnvironmentVars.h"
+#include "PathUtilities.h"
 
-    // Mezzy Headers
-    #include "CommandLineCallingTable.h"
-#endif
+#include "MezzTest.h"
 
 
-namespace Mezzanine {
-namespace Mezzy {
-
-using RepoList = std::vector<String>;
-
-
-// Add list of repos
-
-// scan folders for known repos.
-
-// scan for unknown with builkd dirs
-
-// scan for others.
+DEFAULT_TEST_GROUP(EnvironmentVarsTest, EnvironmentVars)
+{
+    using namespace Mezzanine::Mezzy;
+    using Mezzanine::String;
+    using Mezzanine::Testing::TestResult;
+    using Mezzanine::Filesystem::GetDirectorySeparator_Host;
 
 
-}}
+    TestLog << "\n Mezz Package dir values for manual investigation:" << '\n'
+            << "  GetMezzaninePathVar():   " << GetMezzaninePathVar() << '\n'
+            << "  IsMezzaninePathVarSet(): " << IsMezzaninePathVarSet() << '\n'
+            << "  GetMezzaninePath():      " << GetMezzaninePath() << '\n'
+            << std::endl;
+
+    TEST_STRING_CONTAINS("MezzPackageVarContainsMezz", String("MEZZ"),  GetMezzaninePathVar())
+
+    if(IsMezzaninePathVarSet())
+    {
+        // This presumes that it is not set to an empty string which is possible but will results in non-sense, and
+        // shouldn't happen in CI testing.
+        TEST("GetSetMezzPackageDir", !GetMezzaninePath().empty())
+        TEST_RESULT("GetUnsetMezzPackageDir", TestResult::Skipped)
+
+
+    } else {
+        // When the var is unset this stuff is either non-sense or needs to set return an empty string.
+        TEST_RESULT("GetSetMezzPackageDir", TestResult::Skipped)
+        TEST("GetUnsetMezzPackageDir", GetMezzaninePath().empty())
+    }
+
+}
 
 #endif

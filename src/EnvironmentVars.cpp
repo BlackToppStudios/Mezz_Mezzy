@@ -39,17 +39,44 @@
 */
 
 /// @file
-/// @brief
+/// @brief All of the rules and policy for interacting with env vars.
+
+// Other Mezzanine Headers
+#include "PathUtilities.h"
 
 // Mezzy Headers
-#include "RepoLookup.h"
 #include "DataTypes.h"
+#include "EnvironmentVars.h"
+
 
 namespace Mezzanine {
 namespace Mezzy {
 
+namespace {
+    SAVE_WARNING_STATE
+    SUPPRESS_CLANG_WARNING("-Wexit-time-destructors")
+    SUPPRESS_CLANG_WARNING("-Wglobal-constructors")
+
+    const String MezzaninePathVar = "MEZZ_PACKAGE_DIR";
+
+    RESTORE_WARNING_STATE
+}
 
 
+// Package Dir
+String GetMezzaninePathVar()
+    { return MezzaninePathVar; }
+
+Boole IsMezzaninePathVarSet()
+    { return nullptr != std::getenv(GetMezzaninePathVar().c_str()); }
+
+String GetMezzaninePath()
+{
+    char* Posssible = std::getenv(GetMezzaninePathVar().c_str());
+    if(nullptr == Posssible)
+        { return ""; }
+    return String(Posssible);
+}
 
 } // Namepspaces Mezzy/Mezzanine
 }

@@ -37,37 +37,56 @@
    Joseph Toppi - toppij@gmail.com
    John Blackwood - makoenergy02@gmail.com
 */
-#ifndef Mezz_Mezzy_RepoLookup_h
-#define Mezz_Mezzy_RepoLookup_h
-
+#ifndef Mezz_Mezzy_JagatiLocationsTest_h
+#define Mezz_Mezzy_JagatiLocationsTest_h
 
 /// @file
-/// @brief The interface for parsing command line arguments.
+/// @brief Tests Jagati value lookups
 
-#ifndef SWIG
-    // Mezzanine Headers
-    #include "DataTypes.h"
+// Mezzy
+#include "EnvironmentVars.h"
+#include "JagatiLocations.h"
 
-    // Mezzy Headers
-    #include "CommandLineCallingTable.h"
-#endif
+#include "PathUtilities.h"
 
-
-namespace Mezzanine {
-namespace Mezzy {
-
-using RepoList = std::vector<String>;
+#include "MezzTest.h"
 
 
-// Add list of repos
+DEFAULT_TEST_GROUP(JagatiLocationsTest, JagatiLocationsVars)
+{
+    using namespace Mezzanine::Mezzy;
+    using Mezzanine::String;
+    using Mezzanine::Testing::TestResult;
+    using Mezzanine::Filesystem::GetDirectorySeparator_Host;
 
-// scan folders for known repos.
+    TestLog << "\n Jagati dir values for manual investigation:" << '\n'
+            << "  GetJagatiDir():             " << GetJagatiDir() << '\n'
+            << "  GetJagatiCMakeFile():       " << GetJagatiCMakeFile() << '\n'
+            << "  GetJagatiPackageListFile(): " << GetJagatiPackageListFile() << '\n'
+            << std::endl;
 
-// scan for unknown with builkd dirs
+    const String DoubleDirectorySeparator = String(2,GetDirectorySeparator_Host());
 
-// scan for others.
+    if(IsMezzaninePathVarSet())
+    {
+        // This presumes that it is not set to an empty string which is possible but will results in non-sense, and
+        // shouldn't happen in CI testing.
+        TEST_STRING_CONTAINS("GetJagatiDir", String("agati"), GetJagatiDir())
+        TEST("JagatiDirNoDoubleSlashes", String::npos == GetJagatiDir().find( DoubleDirectorySeparator ))
+
+        TEST("JagatiFileName", String::npos != GetJagatiCMakeFile().find( "cmake" ))
+        TEST("JagatiPackageIndexFileName", String::npos != GetJagatiPackageListFile().find( "cmake" ))
 
 
-}}
+    } else {
+        // When the var is unset this stuff is either non-sense or needs to set return an empty strings.
+        TEST("GetJagatiDir", GetJagatiDir().empty())
+        TEST_RESULT("JagatiDirNoDoubleSlashes", TestResult::Skipped)
+
+        TEST("JagatiFileName", GetJagatiCMakeFile().empty())
+        TEST("JagatiPackageIndexFileName", GetJagatiPackageListFile().empty())
+    }
+
+}
 
 #endif

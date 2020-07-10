@@ -218,7 +218,7 @@ String CommandLineCallingTableVisitorHelpMessager::GetDefaultHelpMessage()
 void CommandLineCallingTableVisitorHelpMessager::operator()(
     const CommandLineCallingTable::CommandLineCallingTableRecord& Handler)
 {
-    const String Keys( (Handler.ShortKey.size()) ? (Handler.ShortKey+"|"+Handler.LongKey) : (Handler.LongKey) );
+    const String Keys( (Handler.ShortKey.size()) ? (Handler.ShortKey+" | "+Handler.LongKey) : (Handler.LongKey) );
     const Int32 LeftMargin{40};
 
     Heading += " [ " + Keys + " ]";

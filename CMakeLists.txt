@@ -84,10 +84,14 @@ EmitExceptionSource()
 message(STATUS "Determining Source Files.")
 
 AddHeaderFile("CommandLineCallingTable.h")
+AddHeaderFile("EnvironmentVars.h")
+AddHeaderFile("JagatiLocations.h")
 AddHeaderFile("RepoLookup.h")
 ShowList("Header Files:" "\t" "${MezzyFiles}")
 
 AddSourceFile("CommandLineCallingTable.cpp")
+AddSourceFile("EnvironmentVars.cpp")
+AddSourceFile("JagatiLocations.cpp")
 AddSourceFile("RepoLookup.cpp")
 ShowList("Source Files:" "\t" "${MezzySourceFiles}")
 
@@ -107,7 +111,10 @@ CreateCoverageTarget(${MezzyLib} "${MezzySourceFiles}")
 #target_include_directories(${MezzyLib} PRIVATE "${MezzyLibDir}")
 
 AddTestFile("CommandLineCallingTableTest.h")
+AddTestFile("EnvironmentVarsTest.h")
+AddTestFile("JagatiLocationsTest.h")
 AddTestFile("RepoLookupTest.h")
+
 EmitTestCode()
 AddTestTarget()
 

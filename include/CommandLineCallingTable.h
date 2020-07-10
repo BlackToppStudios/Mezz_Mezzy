@@ -249,10 +249,10 @@ public:
 
     String GetDefaultHelpMessage();
 
-    CommandLineCallingTableVisitorHelpMessager(const CommandLineCallingTableVisitorHelpMessager&) = default;
-    CommandLineCallingTableVisitorHelpMessager& operator=(const CommandLineCallingTableVisitorHelpMessager&) = default;
-    CommandLineCallingTableVisitorHelpMessager(CommandLineCallingTableVisitorHelpMessager&&) = default;
-    ~CommandLineCallingTableVisitorHelpMessager() = default;
+    //CommandLineCallingTableVisitorHelpMessager(const CommandLineCallingTableVisitorHelpMessager&) = default;
+    //CommandLineCallingTableVisitorHelpMessager& operator=(const CommandLineCallingTableVisitorHelpMessager&) = default;
+    //CommandLineCallingTableVisitorHelpMessager(CommandLineCallingTableVisitorHelpMessager&&) = default;
+    //~CommandLineCallingTableVisitorHelpMessager() = default;
 
     void operator()(const CommandLineCallingTable::CommandLineCallingTableRecord& Handler);
 

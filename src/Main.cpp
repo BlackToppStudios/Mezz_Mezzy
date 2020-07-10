@@ -44,12 +44,24 @@
 #include "CommandLineCallingTable.h"
 
 #include "CommandLine.h"
-#include "RepoLookup.h"
+#include "EnvironmentVars.h"
+#include "JagatiLocations.h"
 
 #include <iostream>
 
+using CallingTableType = Mezzanine::Mezzy::CommandLineCallingTable;
+using ArgVectorType = Mezzanine::Mezzy::CommandLineCallingTable::ArgVectorType;
+
+using namespace Mezzanine::Mezzy;
+
 namespace  {
+    SAVE_WARNING_STATE
+    SUPPRESS_CLANG_WARNING("-Wexit-time-destructors")
+    SUPPRESS_CLANG_WARNING("-Wglobal-constructors")
+
     Mezzanine::Mezzy::CommandLineCallingTable CallingTable;
+
+    RESTORE_WARNING_STATE
 }
 
 void AddCallingTableEntries();
@@ -119,28 +131,37 @@ Mezzanine::ExitCode main(int ArgCount, char** Arguments)
     //      get hash
     //      get version
     //      have a way to put both in file
-
-
-
-    return EXIT_SUCCESS;
 }
 
 void AddCallingTableEntries()
 {
+
     CallingTable.AddTableEntry(
         "-p",  "--package-dir",
-        "Print The Mezzanine Package Directory",
-        "This prints the location in the enviornment variable '" +
-            Mezzanine::Mezzy::GetMezzaninePathVar() + "' ",
-        Mezzanine::Mezzy::GetMezzaninePathHandler);
+        "Display The Mezzanine Package Directory.",
+        "This prints the location in the enviornment variable '" + Mezzanine::Mezzy::GetMezzaninePathVar() + "'.",
+        [](const ArgVectorType ){ std::cout << GetMezzaninePath() << std::endl; });
 
     CallingTable.AddTableEntry(
         "-j",  "--jagati-dir",
-        "Print The directory of the Jagati metapackage package",
-        "Based on the Mezzanine Package Directory environment variable this prints location of the Jagati directory. "
+        "Display the directory of the Jagati metapackage package.",
+        "Based on the Mezzanine Package Directory environment variable this prints location of the Jagati directory."
             "This won't exist on every system, only people developing the Jagati need it.",
-        Mezzanine::Mezzy::GetMezzaninePathHandler);
+        [](const ArgVectorType ){ std::cout << GetJagatiDir() << std::endl; });
 
+    CallingTable.AddTableEntry(
+        "-J",  "--jagati-cmake-file",
+        "Display the Jagati cmake file name.",
+        "Based on the Mezzanine Package Directory environment variable this prints location of the Jagati CMake File. "
+            "This should be inside the Jagati directory, which might not exist on every system",
+        [](const ArgVectorType ){ std::cout << GetJagatiCMakeFile() << std::endl; });
 
+    // TODO https://github.com/BlackToppStudios/Mezz_Mezzy/issues/15 - Env var to find this
+    CallingTable.AddTableEntry(
+        "-I",  "--jagati-package-index-file",
+        "Display the Jagati Package Index file name.",
+        "Based on the Mezzanine Package Directory environment variable this prints location of the Jagati Package "
+            "Index File. This should be inside the Jagati directory, which might not exist on every system",
+        [](const ArgVectorType ){ std::cout << GetJagatiPackageListFile() << std::endl; });
 
 }

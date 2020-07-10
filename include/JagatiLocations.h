@@ -1,23 +1,23 @@
 // © Copyright 2010 - 2019 BlackTopp Studios Inc.
-/* This file is part of The UTF8 Conversion Library.
+/* This file is part of The Mezzanine Engine.
 
-    The UTF8 Conversion Library is free software: you can redistribute it and/or modify
+    The Mezzanine Engine is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    The UTF8 Conversion Library is distributed in the hope that it will be useful,
+    The Mezzanine Engine is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with The UTF8 Conversion Library.  If not, see <http://www.gnu.org/licenses/>.
+    along with The Mezzanine Engine.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* The original authors have included a copy of the license specified above in the
-   'doc' folder. See 'gpl.txt'
+   'Docs' folder. See 'gpl.txt'
 */
-/* We welcome the use of the UTF8 Conversion Library to anyone, including companies who wish to
+/* We welcome the use of the Mezzanine engine to anyone, including companies who wish to
    Build professional software and charge for their product.
 
    However there are some practical restrictions, so if your project involves
@@ -37,21 +37,37 @@
    Joseph Toppi - toppij@gmail.com
    John Blackwood - makoenergy02@gmail.com
 */
+#ifndef Mezz_Mezzy_JagatiLocations_h
+#define Mezz_Mezzy_JagatiLocations_h
+
 
 /// @file
-/// @brief
+/// @brief The interface for parsing command line arguments.
 
-// Mezzy Headers
-#include "RepoLookup.h"
-#include "DataTypes.h"
+#ifndef SWIG
+    // Mezzanine Headers
+    #include "DataTypes.h"
+
+    // Mezzy Headers
+    #include "CommandLineCallingTable.h"
+#endif
+
 
 namespace Mezzanine {
 namespace Mezzy {
 
+/// @brief Get The Jagati package Directory.
+/// @return An emptry string if the package dir var is unset otherwise the Jagati dir where it indicated.
+MEZZ_LIB String GetJagatiDir();
 
+/// @brief Get the Jagati.cmake absolute file path.
+/// @return An empty string if the Mezzanine dir env var is unset, other the Main Jagati CMake file name.
+MEZZ_LIB String GetJagatiCMakeFile();
 
+/// @brief Get the JagatiIndex.cmake absolute file path.
+/// @return An empty string if the Mezzanine dir env var is unset, other the Jagati Packagee Index file.
+MEZZ_LIB String GetJagatiPackageListFile();
 
-} // Namepspaces Mezzy/Mezzanine
-}
+}}
 
-
+#endif
