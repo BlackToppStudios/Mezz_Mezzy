@@ -1,23 +1,23 @@
 // © Copyright 2010 - 2019 BlackTopp Studios Inc.
-/* This file is part of The Mezzanine Engine.
+/* This file is part of The UTF8 Conversion Library.
 
-    The Mezzanine Engine is free software: you can redistribute it and/or modify
+    The UTF8 Conversion Library is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    The Mezzanine Engine is distributed in the hope that it will be useful,
+    The UTF8 Conversion Library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with The Mezzanine Engine.  If not, see <http://www.gnu.org/licenses/>.
+    along with The UTF8 Conversion Library.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* The original authors have included a copy of the license specified above in the
-   'Docs' folder. See 'gpl.txt'
+   'doc' folder. See 'gpl.txt'
 */
-/* We welcome the use of the Mezzanine engine to anyone, including companies who wish to
+/* We welcome the use of the UTF8 Conversion Library to anyone, including companies who wish to
    Build professional software and charge for their product.
 
    However there are some practical restrictions, so if your project involves
@@ -37,17 +37,48 @@
    Joseph Toppi - toppij@gmail.com
    John Blackwood - makoenergy02@gmail.com
 */
-#ifndef Mezz_Mezzy_HeaderName_cpp
-#define Mezz_Mezzy_HeaderName_cpp
-
 
 /// @file
-/// @brief Descriptions of declarations in SampleHeader
+/// @brief All of the rules and policy for interacting with env vars.
 
-// Put declarations here.
+// Other Mezzanine Headers
+#include "PathUtilities.h"
 
-/// @brief This is a sample function to prove this works.
-/// @return A number that contains the solution to life the universe and everything.
-int SampleCodeThatReturnsNumber();
+// Mezzy Headers
+#include "DataTypes.h"
+#include "EnvironmentVars.h"
 
-#endif
+
+namespace Mezzanine {
+namespace Mezzy {
+
+namespace {
+    SAVE_WARNING_STATE
+    SUPPRESS_CLANG_WARNING("-Wexit-time-destructors")
+    SUPPRESS_CLANG_WARNING("-Wglobal-constructors")
+
+    const String MezzaninePathVar = "MEZZ_PACKAGE_DIR";
+
+    RESTORE_WARNING_STATE
+}
+
+
+// Package Dir
+String GetMezzaninePathVar()
+    { return MezzaninePathVar; }
+
+Boole IsMezzaninePathVarSet()
+    { return nullptr != std::getenv(GetMezzaninePathVar().c_str()); }
+
+String GetMezzaninePath()
+{
+    char* Posssible = std::getenv(GetMezzaninePathVar().c_str());
+    if(nullptr == Posssible)
+        { return ""; }
+    return String(Posssible);
+}
+
+} // Namepspaces Mezzy/Mezzanine
+}
+
+

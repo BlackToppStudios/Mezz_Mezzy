@@ -38,12 +38,20 @@
    John Blackwood - makoenergy02@gmail.com
 */
 
-#include "SampleHeader.h"
-
 /// @file
-/// @brief Description of the implementation of SampleSource
+/// @brief
 
-// put code here
+// Mezzy Headers
+#include "RepoLookup.h"
+#include "DataTypes.h"
 
-int SampleCodeThatReturnsNumber()
-    { return 42; }
+namespace Mezzanine {
+namespace Mezzy {
+
+
+
+
+} // Namepspaces Mezzy/Mezzanine
+}
+
+

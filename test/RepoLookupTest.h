@@ -37,29 +37,26 @@
    Joseph Toppi - toppij@gmail.com
    John Blackwood - makoenergy02@gmail.com
 */
-#ifndef Mezz_Mezzy_SmapleTest_h
-#define Mezz_Mezzy_SmapleTest_h
+#ifndef Mezz_Mezzy_RepoLookupTest_h
+#define Mezz_Mezzy_RepoLookupTest_h
 
 /// @file
-/// @brief Tests for the stuff in SampleHeader and SampleSource
+/// @brief Tests Basic Repo lookup tools
 
 
-// Add other headers you need here
-#include "SampleHeader.h"
+#include "RepoLookup.h"
 
 #include "MezzTest.h"
 
-// This boilerplate sucks, but it is as small as was reasonable to make it. This always matches the filename. Just
-// Put FilenameTest in for the first parameter and Filename in for the second. There are reasons for this but even
-// The developers of this havn't found a good reason to deviate, dig into the Mezz_Test docs if you want details.
-DEFAULT_TEST_GROUP(SampleTest, Sample)
-{
-    // Put tests here! Look into the Mezz_Test docs for more assertions
-    TEST("SampleTestThatAlwaysShouldPass", 0 < 1);
 
-    TEST_EQUAL("SampleCodeThatReturnsNumber-ReturnsAnswerToLifeUniverseAndEverything",
-               42,
-               SampleCodeThatReturnsNumber());
+DEFAULT_TEST_GROUP(RepoLookupTest, RepoLookup)
+{
+
+
+    //TEST_EQUAL("BExecutionSanityCheck4Index2",      Mezzanine::String("3"), CaptureVectorB[2]);
+
+    // This should throw on calling a bad table entry.
+    //TEST_THROW("ThrowBadExecuteName", std::runtime_error, [&](){ UnderTest.ExecuteEntry("NotArg"); });
 }
 
 #endif

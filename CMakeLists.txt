@@ -52,10 +52,10 @@ if(NOT JAGATI_Download)
     option(JAGATI_Download "Should the Jagati be downloaded automatically" ON)
 endif(NOT JAGATI_Download)
 if(JAGATI_Download)
-    set(JAGATI_Checksum "8e4980390f1819721142bf7940238e9e535d20316540fce9bb4\
-3287bbffc382020567662e33f31db66d75897042aede72e0b5bb781cafa73834a09aa25340b6f"
+    set(JAGATI_Checksum "6aa2eb83eca66c9a06519a1138e4d72b7a6243da13026020eb0\
+644ffd4c89e566e9716cc16a9fcee15651b65a517fbc61d4002b2f9e0883143a54c6684aabcb4"
         CACHE STRING "Check that when the Jagati is downloaded the right one is used (for consistency and security).")
-    set(JAGATI_Url "https://raw.githubusercontent.com/BlackToppStudios/Jagati/0.26.2/Jagati.cmake"
+    set(JAGATI_Url "https://raw.githubusercontent.com/BlackToppStudios/Jagati/0.30.2/Jagati.cmake"
         CACHE STRING "Where to download the Jagati from.")
     file(DOWNLOAD "${JAGATI_Url}" "${JAGATI_File}" EXPECTED_HASH SHA512=${JAGATI_Checksum})
 endif(JAGATI_Download)
@@ -68,30 +68,53 @@ StandardJagatiSetup()
 IncludeJagatiPackage("StaticFoundation")
 IncludeJagatiPackage("Test")
 IncludeJagatiPackage("Foundation")
+IncludeJagatiPackage("Filesystem")
+
+##########################################################
+# Exceptions
+
+# Add custom exceptions here.
+
+EmitExceptionSource()
+#AddExceptionSource()
+
 
 ########################################################################################################################
 # Source files
 message(STATUS "Determining Source Files.")
 
-AddHeaderFile("SampleHeader.h")
+AddHeaderFile("CommandLineCallingTable.h")
+AddHeaderFile("EnvironmentVars.h")
+AddHeaderFile("JagatiLocations.h")
+AddHeaderFile("RepoLookup.h")
 ShowList("Header Files:" "\t" "${MezzyFiles}")
 
-AddSourceFile("SampleSource.cpp")
+AddSourceFile("CommandLineCallingTable.cpp")
+AddSourceFile("EnvironmentVars.cpp")
+AddSourceFile("JagatiLocations.cpp")
+AddSourceFile("RepoLookup.cpp")
 ShowList("Source Files:" "\t" "${MezzySourceFiles}")
 
 AddJagatiDoxInput("Dox.h")
 ShowList("Doxygen Input Files:" "\t" "${MezzyDoxFiles}")
 
+AddMainSourceFile("Main.cpp")
+
 ########################################################################################################################
 # Basic Targets and Test declaration
 AddJagatiLibrary()
+AddJagatiExecutable()
 CreateCoverageTarget(${MezzyLib} "${MezzySourceFiles}")
 
 # Uncomment this if you want to include files in lib/ in your source. Some Libraries can get away
 # with this simple scheme, some need much more sophistication.
 #target_include_directories(${MezzyLib} PRIVATE "${MezzyLibDir}")
 
-AddTestFile("SampleTest.h")
+AddTestFile("CommandLineCallingTableTest.h")
+AddTestFile("EnvironmentVarsTest.h")
+AddTestFile("JagatiLocationsTest.h")
+AddTestFile("RepoLookupTest.h")
+
 EmitTestCode()
 AddTestTarget()
 
